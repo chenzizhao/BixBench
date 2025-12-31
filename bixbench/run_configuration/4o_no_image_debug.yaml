@@ -6,10 +6,10 @@ agent:
       num_retries: 5
       temperature: 1.0
       name: gpt-4o
-      api_base: http://localhost:8000/v1
+      api_base: http://localhost:8000/v1 #  to inspect exact request/response
     hide_old_env_states: true
 rollout:
-  max_steps: 2
+  max_steps: 3
   batch_size: 1
   rollout_type: aviary
 notebook:

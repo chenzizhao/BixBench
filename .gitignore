@@ -52,4 +52,4 @@ MANIFEST
 *.spec
 
 data/
-bixbench-v1.5_results_debug/
+bixbench-v1.5_results_debug*
