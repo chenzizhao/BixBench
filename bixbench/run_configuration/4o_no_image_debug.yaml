@@ -1,3 +1,4 @@
+# uv run --env-file .env bixbench/generate_trajectories.py --config_file bixbench/run_configuration/4o_no_image_debug.yaml --question_id bix-37-q4 --replica_id=0
 agent:
   agent_type: SimpleAgent
   agent_kwargs:
@@ -5,11 +6,11 @@ agent:
       parallel_tool_calls: false
       num_retries: 5
       temperature: 1.0
-      name: gpt-4o
+      name: gpt-4o-mini
       api_base: http://localhost:8000/v1 #  to inspect exact request/response
     hide_old_env_states: true
 rollout:
-  max_steps: 3
+  max_steps: 20
   batch_size: 1
   rollout_type: aviary
 notebook:

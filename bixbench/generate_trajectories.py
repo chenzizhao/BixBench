@@ -59,6 +59,9 @@ class TrajectoryGenerator:
             replica_id: Replica ID
             question_ids: List of question IDs to filter (e.g., ['bix-3-q1', 'bix-3-q2'])
         """
+        logger.info(f"{config_path=}")
+        logger.info(f"{question_ids=}")
+        logger.info(f"{replica_id=}")
         self.config = self.load_config(config_path)
         logger.debug(f"Config: \n{self.config.model_dump_json(indent=4)}")
         self.replica_id = replica_id
