@@ -67,7 +67,7 @@ def load_raw_data(path: str) -> pd.DataFrame:
     return raw_data
 
 
-async def process_trajectories(df: pd.DataFrame) -> pd.DataFrame:
+async def process_trajectories(df: pd.DataFrame, expand_mcq: bool) -> pd.DataFrame:
     """
     Create a gradable dataframe from a raw dataframe of trajectories.
 
@@ -80,7 +80,7 @@ async def process_trajectories(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed evaluation dataframe with graded responses
     """
-    eval_df = utils.create_eval_df(df)
+    eval_df = utils.create_eval_df(df, expand_mcq=expand_mcq)
     eval_df = await utils.run_eval_loop(eval_df)
 
     # Handle different evaluation modes
@@ -307,7 +307,7 @@ async def load_or_process_data(config: PostprocessingConfig) -> pd.DataFrame:
                     "please follow the readme to download the raw trajectory data"
                 )
             data = load_raw_data(trajectory_path)
-            return await process_trajectories(data)
+            return await process_trajectories(data, expand_mcq=config.expand_mcq)
 
         eval_df_path = config.eval_df_path
         if not os.path.exists(eval_df_path):
@@ -320,7 +320,7 @@ async def load_or_process_data(config: PostprocessingConfig) -> pd.DataFrame:
 
     # Case 3: Running new analysis from raw data
     data = load_raw_data(data_path)
-    return await process_trajectories(data)
+    return await process_trajectories(data, expand_mcq=config.expand_mcq)
 
 
 async def main(config_path: str):
@@ -347,6 +347,7 @@ async def main(config_path: str):
     # Save intermediary processed data for debugging
     if config.debug | (config.replicate_paper_results.from_trajectories):
         eval_df.to_csv(config.eval_df_path, index=False)
+        print(f"Saved intermediary processed data to {config.eval_df_path.absolute()}")
 
     # Run majority vote if configured
     if config.majority_vote.run:

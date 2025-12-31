@@ -209,6 +209,7 @@ class PostprocessingConfig(BaseModel):
     results_dir: str = "bixbench_results"
     eval_df_filename: str = "eval_df.csv"
     debug: bool = False
+    expand_mcq: bool = True
 
     replicate_paper_results: PaperReplicationConfig = Field(
         default_factory=PaperReplicationConfig
