@@ -131,6 +131,7 @@ class BixbenchConfig(BaseModel):
     # Computed fields that come from processing the raw config
     system_prompt: str | None = None
     dataset_split: str = "train"
+    question_ids: list[str] | None = None
 
     class Config:
         arbitrary_types_allowed = True

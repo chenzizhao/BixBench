@@ -49,7 +49,7 @@ class TrajectoryGenerator:
     """
 
     def __init__(
-        self, config_path=DEFAULT_CONFIG_PATH, replica_id: int | None = None, question_ids: list[str] | None = None
+        self, config_path=DEFAULT_CONFIG_PATH, replica_id: int | None = None
     ) -> None:
         """
         Initialize the TrajectoryGenerator with config and create necessary directories.
@@ -57,15 +57,12 @@ class TrajectoryGenerator:
         Args:
             config_path: Path to the configuration file
             replica_id: Replica ID
-            question_ids: List of question IDs to filter (e.g., ['bix-3-q1', 'bix-3-q2'])
         """
         logger.info(f"{config_path=}")
-        logger.info(f"{question_ids=}")
         logger.info(f"{replica_id=}")
         self.config = self.load_config(config_path)
         logger.debug(f"Config: \n{self.config.model_dump_json(indent=4)}")
         self.replica_id = replica_id
-        self.question_ids = question_ids
         # Create directories
         self.config.local_workspace_dir.mkdir(parents=True, exist_ok=True)
         self.config.local_trajectories_dir.mkdir(parents=True, exist_ok=True)
@@ -153,10 +150,10 @@ class TrajectoryGenerator:
         bixbench = bixbench.to_list()
 
         # Filter by question_id if specified
-        if self.question_ids is not None:
-            question_id_set = set(self.question_ids)
+        if self.config.question_ids is not None:
+            question_id_set = set(self.config.question_ids)
             bixbench = [question for question in bixbench if question["question_id"] in question_id_set]
-            logger.info(f"Filtered dataset to {len(bixbench)} questions matching question_ids: {self.question_ids}")
+            logger.info(f"Filtered dataset to {len(bixbench)} questions matching")
 
         # Process all capsule data concurrently
         zip_filenames = {question["data_folder"] for question in bixbench}
@@ -518,14 +515,7 @@ if __name__ == "__main__":
         default=None,
         help="Replica ID",
     )
-    parser.add_argument(
-        "--question_id",
-        type=str,
-        nargs="+",
-        default=None,
-        help="List of question IDs to filter (e.g., 'bix-3-q1 bix-3-q2' or '--question_id bix-3-q1 --question_id bix-3-q2')",
-    )
     args = parser.parse_args()
 
-    generator = TrajectoryGenerator(args.config_file, args.replica_id, question_ids=args.question_id)
+    generator = TrajectoryGenerator(args.config_file, args.replica_id)
     asyncio.run(generator.run())

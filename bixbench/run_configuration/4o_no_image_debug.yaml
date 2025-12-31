@@ -1,4 +1,4 @@
-# uv run --env-file .env bixbench/generate_trajectories.py --config_file bixbench/run_configuration/4o_no_image_debug.yaml --question_id bix-37-q4 --replica_id=0
+# uv run --env-file .env bixbench/generate_trajectories.py --config_file bixbench/run_configuration/4o_no_image_debug.yaml --replica_id=0
 agent:
   agent_type: SimpleAgent
   agent_kwargs:
@@ -34,3 +34,5 @@ paths:
   hf_repo_id: futurehouse/BixBench
 dataset_split: train
 run_name: 4o_no_image_debug
+question_ids:
+  - bix-37-q4
