@@ -1,0 +1,14 @@
+# uv run --env-file .env bixbench/postprocessing.py --config_file bixbench/run_configuration/postprocessing_4o_no_image_parity50.yaml
+data_path: "bixbench-v1.5_results_parity50/trajectories/"
+results_dir: "bixbench-v1.5_results_parity50"
+debug: true
+expand_mcq: false
+
+replicate_paper_results:
+  run: false
+
+majority_vote:
+  run: false
+
+run_comparison:
+  run: false
