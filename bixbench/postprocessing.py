@@ -19,9 +19,19 @@ from bixbench.models import (
     PostprocessingConfig,
     RunComparisonConfig,
 )
+import re
 
 pd.options.mode.chained_assignment = None
 # If true, save and load intermediate results to avoid re-running the same steps
+
+# open answer extraction (cannot use ast tuple b/c e.g. 19,159 -> (19, 159) bix-52-q7)
+def _extract_open_answer(answer: str) -> str:
+    if answer is None:
+        return None
+    match = re.search(r"<answer>(.*)</answer>", answer)
+    if match:
+        return match.group(1)
+    return answer
 
 
 def load_raw_data(path: str) -> pd.DataFrame:
@@ -43,8 +53,11 @@ def load_raw_data(path: str) -> pd.DataFrame:
     )
 
     mapping = {
-        "agent_answer": utils.load_answer,
-        "ideal_answer": utils.load_answer,
+        # # open answer only
+        "agent_answer": _extract_open_answer,
+        "ideal_answer": str,
+        # "agent_answer": utils.load_answer,
+        # "ideal_answer": utils.load_answer,
         "mcq_options": ast.literal_eval,
         "mcq_question": str,
         "nb": utils.load_notebook,

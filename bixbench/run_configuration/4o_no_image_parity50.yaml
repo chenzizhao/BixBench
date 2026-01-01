@@ -1,0 +1,87 @@
+# uv run --env-file .env bixbench/generate_trajectories.py --config_file bixbench/run_configuration/4o_no_image_parity50.yaml --replica_id=0
+agent:
+  agent_type: SimpleAgent
+  agent_kwargs:
+    llm_model:
+      parallel_tool_calls: false
+      num_retries: 5
+      temperature: 1.0
+      name: gpt-4o-mini
+      api_base: http://localhost:8000/v1 #  to inspect exact request/response
+    hide_old_env_states: true
+rollout:
+  max_steps: 20
+  batch_size: 4
+  rollout_type: aviary
+notebook:
+  name: notebook.ipynb
+  language: python
+  use_docker: true
+capsule:
+  prompt_templates:
+    mcq: MCQ_PROMPT_TEMPLATE
+    open: OPEN_PROMPT_TEMPLATE
+    hypothesis: HYPOTHESIS_PROMPT_TEMPLATE
+  eval_mode: null
+  mode: open
+  include_refusal_option: true
+  avoid_images: true
+  system_prompt: CAPSULE_SYSTEM_PROMPT_OPEN
+paths:
+  workspace_dir: data/workspace
+  trajectories_dir: bixbench-v1.5_results_parity50/trajectories
+  data_folder: data/capsules
+  hf_repo_id: futurehouse/BixBench
+dataset_split: train
+run_name: 4o_no_image_parity50
+question_ids:
+  - bix-1-q2
+  - bix-10-q5
+  - bix-10-q6
+  - bix-10-q7
+  - bix-11-q3
+  - bix-13-q3
+  - bix-13-q4
+  - bix-13-q5
+  - bix-14-q2
+  - bix-16-q1
+  - bix-18-q3
+  - bix-19-q2
+  - bix-19-q3
+  - bix-22-q1
+  - bix-24-q1
+  - bix-24-q2
+  - bix-24-q6
+  - bix-25-q4
+  - bix-26-q5
+  - bix-28-q2
+  - bix-28-q5
+  - bix-28-q6
+  - bix-31-q2
+  - bix-31-q3
+  - bix-31-q4
+  - bix-32-q4
+  - bix-34-q4
+  - bix-36-q5
+  - bix-37-q1
+  - bix-38-q3
+  - bix-42-q1
+  - bix-45-q6
+  - bix-47-q3
+  - bix-5-q4
+  - bix-51-q1
+  - bix-51-q4
+  - bix-52-q7
+  - bix-53-q4
+  - bix-54-q4
+  - bix-54-q5
+  - bix-6-q4
+  - bix-6-q7
+  - bix-60-q1
+  - bix-61-q2
+  - bix-61-q3
+  - bix-61-q6
+  - bix-7-q1
+  - bix-7-q3
+  - bix-8-q7
+  - bix-9-q3
