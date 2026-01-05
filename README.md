@@ -29,6 +29,22 @@ This repository enables three separate functions:
 2. Zero-shot evaluations of LLMs on BixBench
 3. Replicating the BixBench paper results
 
+## Instructions to run parity experiment against harbor adapters
+
+For parity experiments only, we randomly subsample 50 tasks out of 205 tasks, and repeat each task three times.
+We use gpt-4o-mini as the model and gpt-4o as the judge. We opt for the 'no image' configuration. Our subset results (16% resolve rate) are comparable to the full 205-task, 5-trials experiment on gpt-4o.
+
+To run the parity subset:
+```bash
+git clone --branch parity https://github.com/chenzizhao/BixBench.git
+cd BixBench
+# repeat with replica_id=1,2,3 (requires OPENAI_API_KEY), taking roughly one hour per replica
+uv run bixbench/generate_trajectories.py --config_file bixbench/run_configuration/4o_no_image_parity50.yaml --replica_id=1
+# llm as a judge (requires OPENAI_API_KEY)
+uv run bixbench/postprocessing.py --config_file bixbench/run_configuration/postprocessing_4o_no_image_parity50.yaml
+# finally extracting the `correct` count from the resulting eval_df.csv
+```
+
 ## Links
 
 - [Installation](#installation)
